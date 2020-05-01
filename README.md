@@ -2,9 +2,9 @@
 # External wall heat transfer
 
 ## Problem
-A.	The wall of a cold room is exposed to solar radiation over a period of time. The wall is made of an insulating material with thermal conductivity of 0.038 W/m-K, specific heat capacity of 0.7 kJ/kg-K and density of 120 kg/m3. The wall can be considered as infinite in two -dimensions and finite along the thickness of 15 cm. Once the wall is exposed to radiation, the temperature across the wall starts increasing from a uniform initial value of 20 ˚C across thickness. 
+The wall of a cold room is exposed to solar radiation over a period of time. The wall is made of an insulating material with thermal conductivity of 0.038 W/m-K, specific heat capacity of 70 J/kg-K and density of 120 kg/m<sub>3</sub>. The wall can be considered as infinite in two -dimensions and finite along the thickness of 15 cm. Once the wall is exposed to radiation, the temperature across the wall starts increasing from a uniform initial value of 20˚C across thickness. 
 
-Assume an average constant radiation of 650 W/m2; outdoor and indoor air temperature maintained at 27 ˚C and 12 ˚C, respectively; average heat transfer coefficient to be 15 W/m2-K; formulate the transient heat transfer problem in terms of difference equations with appropriate boundary condition. Make other assumptions if required.
+Assume an average constant radiation of 650 W/m<sub>2</sub>; outdoor and indoor air temperature maintained at 27˚C and 12˚C, respectively; average heat transfer coefficient to be 15 W/m<sub>2</sub>-K; formulate the transient heat transfer problem in terms of difference equations with appropriate boundary condition. 
 
 
 ## Dependencies
@@ -29,7 +29,7 @@ q_left = 600 # W/sqm
 h = 15 # convective heat transfer coefficient in W / (m^2 * C)
 ```
 
-Simultaneous equations 
+Simultaneous equations (at each node)
 
 
 ```python
