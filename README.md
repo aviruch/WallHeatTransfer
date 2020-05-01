@@ -6,7 +6,16 @@ A.	The wall of a cold room is exposed to solar radiation over a period of time. 
 
 Assume an average constant radiation of 650 W/m2; outdoor and indoor air temperature maintained at 27 ˚C and 12 ˚C, respectively; average heat transfer coefficient to be 15 W/m2-K; formulate the transient heat transfer problem in terms of difference equations with appropriate boundary condition. Make other assumptions if required.
 
-'''
+
+## Dependencies
+
+- Python 
+- Numpy 
+- Scipy 
+- Sympy
+- Matplotlib 
+
+```python
 A = 1 # cross sectional area of wall element in m^2
 L = 0.15  # With of the wall in meter
 nx = 6  # number of locations on the wall nodes
@@ -20,9 +29,11 @@ q_left = 600 # W/sqm
 h = 15 # convective heat transfer coefficient in W / (m^2 * C)
 '''
 
-'''
+```python
 
-def solver_explicit(dict):
+
+
+def solver_implicit(dict):
     eq0 = sym.Eq(q_left + h*(35-t0)+ k*(t1-t0)/dx,k*dx*(t0 - dict[0])/(alpha*2*dt))
     eq1 =sym.Eq(k*(t0-t1)/dx + k*(t2-t1)/dx,k*dx*(t1 - dict[1])/(alpha*2*dt))
     eq2 =sym.Eq(k*(t1-t2)/dx + k*(t3-t2)/dx,k*dx*(t2 - dict[2])/(alpha*2*dt))
