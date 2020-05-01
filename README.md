@@ -27,7 +27,10 @@ alpha = k/(ro*cp)  #  thermal diffusivity
 print ("thermal diffusivity",alpha)
 q_left = 600 # W/sqm
 h = 15 # convective heat transfer coefficient in W / (m^2 * C)
-'''
+```
+
+Simultaneous equations 
+
 
 ```python
 
@@ -42,4 +45,4 @@ def solver_implicit(dict):
     eq5 =sym.Eq(k*(t4-t5)/dx + h*(12-t5),k*dx*(t5 - dict[5])/(alpha*2*dt))
     sol = sym.solve([eq0,eq1,eq2,eq3,eq4,eq5],(t0,t1,t2,t3,t4,t5))
     return sol
-'''
+```
