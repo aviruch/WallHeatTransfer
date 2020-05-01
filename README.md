@@ -1,3 +1,25 @@
+[Python-Markdown][]
+===================
+
+[![Build Status][travis-button]][travis]
+[![Coverage Status][codecov-button]][codecov]
+[![Latest Version][mdversion-button]][md-pypi]
+[![Python Versions][pyversion-button]][md-pypi]
+[![BSD License][bsdlicense-button]][bsdlicense]
+[![Code of Conduct][codeofconduct-button]][Code of Conduct]
+
+[travis-button]: https://img.shields.io/travis/Python-Markdown/markdown.svg
+[travis]: https://travis-ci.org/Python-Markdown/markdown
+[codecov-button]: https://codecov.io/gh/Python-Markdown/markdown/branch/master/graph/badge.svg
+[codecov]: https://codecov.io/gh/Python-Markdown/markdown
+[mdversion-button]: https://img.shields.io/pypi/v/Markdown.svg
+[md-pypi]: https://pypi.org/project/Markdown/
+[pyversion-button]: https://img.shields.io/pypi/pyversions/Markdown.svg
+[bsdlicense-button]: https://img.shields.io/badge/license-BSD-yellow.svg
+[bsdlicense]: https://opensource.org/licenses/BSD-3-Clause
+[codeofconduct-button]: https://img.shields.io/badge/code%20of%20conduct-contributor%20covenant-green.svg?style=flat-square
+[Code of Conduct]: https://github.com/Python-Markdown/markdown/blob/master/CODE_OF_CONDUCT.md
+
 # External wall heat transfer
 
 ## Problem
