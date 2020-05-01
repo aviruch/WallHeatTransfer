@@ -1,24 +1,3 @@
-[Python-Markdown][]
-===================
-
-[![Build Status][travis-button]][travis]
-[![Coverage Status][codecov-button]][codecov]
-[![Latest Version][mdversion-button]][md-pypi]
-[![Python Versions][pyversion-button]][md-pypi]
-[![BSD License][bsdlicense-button]][bsdlicense]
-[![Code of Conduct][codeofconduct-button]][Code of Conduct]
-
-[travis-button]: https://img.shields.io/travis/Python-Markdown/markdown.svg
-[travis]: https://travis-ci.org/Python-Markdown/markdown
-[codecov-button]: https://codecov.io/gh/Python-Markdown/markdown/branch/master/graph/badge.svg
-[codecov]: https://codecov.io/gh/Python-Markdown/markdown
-[mdversion-button]: https://img.shields.io/pypi/v/Markdown.svg
-[md-pypi]: https://pypi.org/project/Markdown/
-[pyversion-button]: https://img.shields.io/pypi/pyversions/Markdown.svg
-[bsdlicense-button]: https://img.shields.io/badge/license-BSD-yellow.svg
-[bsdlicense]: https://opensource.org/licenses/BSD-3-Clause
-[codeofconduct-button]: https://img.shields.io/badge/code%20of%20conduct-contributor%20covenant-green.svg?style=flat-square
-[Code of Conduct]: https://github.com/Python-Markdown/markdown/blob/master/CODE_OF_CONDUCT.md
 
 # External wall heat transfer
 
@@ -27,7 +6,7 @@ A.	The wall of a cold room is exposed to solar radiation over a period of time. 
 
 Assume an average constant radiation of 650 W/m2; outdoor and indoor air temperature maintained at 27 ˚C and 12 ˚C, respectively; average heat transfer coefficient to be 15 W/m2-K; formulate the transient heat transfer problem in terms of difference equations with appropriate boundary condition. Make other assumptions if required.
 
-
+'''
 A = 1 # cross sectional area of wall element in m^2
 L = 0.15  # With of the wall in meter
 nx = 6  # number of locations on the wall nodes
@@ -39,7 +18,9 @@ alpha = k/(ro*cp)  #  thermal diffusivity
 print ("thermal diffusivity",alpha)
 q_left = 600 # W/sqm
 h = 15 # convective heat transfer coefficient in W / (m^2 * C)
+'''
 
+'''
 
 def solver_explicit(dict):
     eq0 = sym.Eq(q_left + h*(35-t0)+ k*(t1-t0)/dx,k*dx*(t0 - dict[0])/(alpha*2*dt))
@@ -50,3 +31,4 @@ def solver_explicit(dict):
     eq5 =sym.Eq(k*(t4-t5)/dx + h*(12-t5),k*dx*(t5 - dict[5])/(alpha*2*dt))
     sol = sym.solve([eq0,eq1,eq2,eq3,eq4,eq5],(t0,t1,t2,t3,t4,t5))
     return sol
+'''
