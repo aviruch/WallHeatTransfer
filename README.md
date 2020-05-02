@@ -22,9 +22,7 @@ h = 15 # convective heat transfer coefficient in W / (m^2 * C)
 Simultaneous equations (at each node)
 
 ```math
-<p align="left">
- u<sub>tt</sub>=alpha u<sub>xx</sub>+ax <br>
-</p>
+ alpha . d <sup>2 </sup>T/dx<sup>2</sup> = dT/dt 
 ```
 
 ```python
