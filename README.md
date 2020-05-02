@@ -22,15 +22,10 @@ h = 15 # convective heat transfer coefficient in W / (m^2 * C)
 Simultaneous equations (at each node)
 
 ```math
-\{ u_t(x,t)=u_{xx}(x,t)\}, \text{ where $\epsilon\in\mathbb{R}$ and $t>0$}
-```
 <p align="left">
- u<sub>tt</sub>=c<sup>2</sup> u<sub>xx</sub>+ax <br>
- u(L,0)=0=u(0,t)<br>
- u<sub>x</sub>(0,t)=0<br>
- u<sub>t</sub>(x,0)=0=u(x,0)<br>
+ u<sub>tt</sub>=alpha u<sub>xx</sub>+ax <br>
 </p>
-
+```
 
 ```python
 def solver_implicit(dict):
