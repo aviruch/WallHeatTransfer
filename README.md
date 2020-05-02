@@ -22,9 +22,10 @@ h = 15 # convective heat transfer coefficient in W / (m^2 * C)
 Simultaneous equations (at each node)
 
 ```math
- alpha . d <sup>2 </sup>T/dx<sup>2</sup> = dT/dt 
-```
 
+```
+ alpha . d <sup>2 </sup>T/dx<sup>2</sup> = dT/dt 
+ 
 ```python
 def solver_implicit(dict):
     eq0 = sym.Eq(q_left + h*(35-t0)+ k*(t1-t0)/dx,k*dx*(t0 - dict[0])/(alpha*2*dt))
