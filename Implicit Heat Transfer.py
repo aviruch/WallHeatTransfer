@@ -1,7 +1,7 @@
 import numpy
 from matplotlib import pyplot
 
-def solver_explicit(dict):
+def solver_implicit(dict):
     eq0 = sym.Eq(q_left + h*(35-t0)+ k*(t1-t0)/dx,k*dx*(t0 - dict[0])/(alpha*2*dt))
     eq1 =sym.Eq(k*(t0-t1)/dx + k*(t2-t1)/dx,k*dx*(t1 - dict[1])/(alpha*2*dt))
     eq2 =sym.Eq(k*(t1-t2)/dx + k*(t3-t2)/dx,k*dx*(t2 - dict[2])/(alpha*2*dt))
@@ -128,28 +128,4 @@ pyplot.show()
 
 
 
-#Rough
 
-# Plot the temperature along the rod.
-##pyplot.figure(figsize=(6.0, 4.0))
-##pyplot.xlabel('Distance [m]')
-##pyplot.ylabel('Temperature [C]')
-##pyplot.grid()
-###pyplot.plot(x, T, color='C0', linestyle='-', linewidth=2)
-##pyplot.xlim(0.0, L)
-#pyplot.ylim(0.0, 100.0);
-#pyplot.show()
-
-
-
-#{t0: 45.9501396025070, t1: 40.6980963517361, t2: 37.0610835898270, t3: 34.6649230490934, t4: 35.6592566961195, t5: 37.7502216904830}
-
-##eq0 = sym.Eq(2000 + k*(t1-t0)/dx,k*dx*(t0 - sol_t_20[t0])/(alpha*2*dt))
-##eq1 =sym.Eq(k*(t0-t1)/dx + k*(t2-t1)/dx,k*dx*(t1 - sol_t_20[t1])/(alpha*2*dt))
-##eq2 =sym.Eq(k*(t1-t2)/dx + k*(t3-t2)/dx,k*dx*(t2 - sol_t_20[t2])/(alpha*2*dt))
-##eq3 =sym.Eq(k*(t2-t2)/dx + k*(t4-t3)/dx,k*dx*(t3 - sol_t_20[t3])/(alpha*2*dt))
-##eq4 =sym.Eq(k*(t3-t4)/dx + k*(t5-t4)/dx,k*dx*(t4 - sol_t_20[t4])/(alpha*2*dt))
-##eq5 =sym.Eq(k*(t4-t5)/dx + h*(50-t5),k*dx*(t5 - sol_t_20[t5])/(alpha*2*dt))
-##
-##sol_t_40 = sym.solve([eq0,eq1,eq2,eq3,eq4,eq5],(t0,t1,t2,t3,t4,t5))
-##print ("sol_t_20",sol_t_40)
