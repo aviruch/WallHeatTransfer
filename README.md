@@ -22,9 +22,9 @@ h = 15 # convective heat transfer coefficient in W / (m^2 * C)
 
 Simultaneous equations (at each node)
 
-\begin{equation}
+```math
 \{ u_t(x,t)=u_{xx}(x,t)\}, \text{ where $\epsilon\in\mathbb{R}$ and $t>0$}
-\end{equation}
+```
 
 
 
