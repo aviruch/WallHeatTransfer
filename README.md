@@ -26,6 +26,12 @@ Simultaneous equations (at each node)
 ```
  alpha . d <sup>2 </sup>T/dx<sup>2</sup> = dT/dt 
  
+ 
+ Inline-style: 
+![alt text](https://github.com/aviruch/WallHeatTransfer/blob/master/Node%200_implicit.JPG "Node 0")
+ 
+ 
+ 
 ```python
 def solver_implicit(dict):
     eq0 = sym.Eq(q_left + h*(35-t0)+ k*(t1-t0)/dx,k*dx*(t0 - dict[0])/(alpha*2*dt))
