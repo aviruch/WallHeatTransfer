@@ -31,7 +31,7 @@ Simultaneous equations (at each node)
  ## Internal nodes 
 ![alt text](https://github.com/aviruch/WallHeatTransfer/blob/master/internal%20implicit.JPG "Node i")
 ## last node
-![alt text](https://github.com/aviruch/WallHeatTransfer/blob/master/Last%20Node.JPG "Node l")
+![alt text](https://github.com/aviruch/WallHeatTransfer/blob/master/lastnode.JPG "Node l")
  
 ```python
 def solver_implicit(dict):
