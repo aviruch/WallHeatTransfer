@@ -26,11 +26,17 @@ Simultaneous equations (at each node)
 ```
  alpha . d <sup>2 </sup>T/dx<sup>2</sup> = dT/dt 
  
- 
+ Node 0
  Inline-style: 
 ![alt text](https://github.com/aviruch/WallHeatTransfer/blob/master/Node%200_implicit.JPG "Node 0")
  
- 
+ Internal nodes
+  Inline-style: 
+![alt text](https://github.com/aviruch/WallHeatTransfer/blob/master/internal%20implicit.JPG "Node i")
+
+last node
+ Inline-style: 
+![alt text](https://github.com/aviruch/WallHeatTransfer/blob/master/Last%20Node.JPG "Node l")
  
 ```python
 def solver_implicit(dict):
