@@ -5,7 +5,7 @@ def solver_implicit(dict):
     eq0 = sym.Eq(q_left + h*(35-t0)+ k*(t1-t0)/dx,k*dx*(t0 - dict[0])/(alpha*2*dt))
     eq1 =sym.Eq(k*(t0-t1)/dx + k*(t2-t1)/dx,k*dx*(t1 - dict[1])/(alpha*2*dt))
     eq2 =sym.Eq(k*(t1-t2)/dx + k*(t3-t2)/dx,k*dx*(t2 - dict[2])/(alpha*2*dt))
-    eq3 =sym.Eq(k*(t2-t2)/dx + k*(t4-t3)/dx,k*dx*(t3 - dict[3])/(alpha*2*dt))
+    eq3 =sym.Eq(k*(t2-t3)/dx + k*(t4-t3)/dx,k*dx*(t3 - dict[3])/(alpha*2*dt))
     eq4 =sym.Eq(k*(t3-t4)/dx + k*(t5-t4)/dx,k*dx*(t4 - dict[4])/(alpha*2*dt))
     eq5 =sym.Eq(k*(t4-t5)/dx + h*(12-t5),k*dx*(t5 - dict[5])/(alpha*2*dt))
 
