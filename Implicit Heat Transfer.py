@@ -1,131 +1,354 @@
-import numpy
-from matplotlib import pyplot
+"""
+1-D Transient Heat Conduction Through a Wall
+------------------------------------------------
 
-def solver_implicit(dict):
-    eq0 = sym.Eq(q_left + h*(35-t0)+ k*(t1-t0)/dx,k*dx*(t0 - dict[0])/(alpha*2*dt))
-    eq1 =sym.Eq(k*(t0-t1)/dx + k*(t2-t1)/dx,k*dx*(t1 - dict[1])/(alpha*2*dt))
-    eq2 =sym.Eq(k*(t1-t2)/dx + k*(t3-t2)/dx,k*dx*(t2 - dict[2])/(alpha*2*dt))
-    eq3 =sym.Eq(k*(t2-t3)/dx + k*(t4-t3)/dx,k*dx*(t3 - dict[3])/(alpha*2*dt))
-    eq4 =sym.Eq(k*(t3-t4)/dx + k*(t5-t4)/dx,k*dx*(t4 - dict[4])/(alpha*2*dt))
-    eq5 =sym.Eq(k*(t4-t5)/dx + h*(12-t5),k*dx*(t5 - dict[5])/(alpha*2*dt))
+This script calculates the transient temperature distribution through
+a 150 mm thick wall using an implicit finite-difference formulation.
 
+Physical model
+--------------
+- One-dimensional heat conduction through the wall thickness
+- Six computational nodes
+- Constant thermal properties
+- Constant outside and inside air temperatures
+- Constant outside heat flux
+- Constant convective heat-transfer coefficient
 
-    sol = sym.solve([eq0,eq1,eq2,eq3,eq4,eq5],(t0,t1,t2,t3,t4,t5))
+Boundary conditions
+-------------------
+Outside surface (Node 0):
+    - Outside air temperature = 35 °C
+    - Applied heat flux       = 700 W/m²
+    - Convection coefficient  = 15 W/m²-K
 
+Inside surface (Node 5):
+    - Inside air temperature  = 25 °C
+    - Convection coefficient  = 15 W/m²-K
 
-    return sol
+Initial condition
+-----------------
+The entire wall initially has a temperature of 25 °C.
 
-def flatSol(sol_t):
-    l= []
-    l.append(sol_t[t0])
-    l.append(sol_t[t1])
-    l.append(sol_t[t2])
-    l.append(sol_t[t3])
-    l.append(sol_t[t4])
-    l.append(sol_t[t5])
-    return l
+Numerical method
+----------------
+An implicit formulation is used. At each time step, the temperatures
+at all six nodes at the new time step are solved simultaneously using
+SymPy.
+"""
 
-# Main Starts here
-
-A = 1 # cross sectional area of wall element in m^2
-L = 0.15  # With of the wall in meter
-nx = 6  # number of locations on the wall nodes
-dx = L / (nx - 1)  # distance between two consecutive locations
-k = 0.30 # thermal conductivity of wall material in W / (m*C)
-ro = 120 # Density of material
-cp = 70 # specific heat capacity in J / (kg*C)
-alpha = k/(ro*cp)  #  thermal diffusivity 
-print ("thermal diffusivity",alpha)
-q_left = 600 # W/sqm
-h = 15 # convective heat transfer coefficient in W / (m^2 * C)
-# Define the locations along the rod.
-x = numpy.linspace(0.0, L, num=nx)
-
-# Set the initial temperature along the rod.
-T0 = numpy.full((10,1),25)
-print ("To",T0)
-##T0[0] = 35.0 # Outside Temperature K
-##T0[-1] = 12.0 # Inside Temperature K
-
-# Set the time-step size based on CFL limit.
-nt = 25  # number of time steps to compute
-sigma = 0.5
-dt = 20 #sigma * dx**2 / alpha  # time-step size
-
-print ("dt",dt)
-
-# Compute the temperature along the wall.
-
-#Node 0
-
+import numpy as np
 import sympy as sym
-#sym.init_printing()
-t0,t1,t2,t3,t4,t5 = sym.symbols('t0,t1,t2,t3,t4,t5')
-
-sol_t_20 = solver_implicit([25,25,25,25,25,25,25])
-print ("sol_t_20",sol_t_20)
-
-# Solution 40 sec
-sol_t_40 = solver_implicit(flatSol(sol_t_20))
-print ("sol_t_40",sol_t_40)
-
-# Solution 60 sec
-sol_t_60 = solver_implicit(flatSol(sol_t_40))
-print ("sol_t_60",sol_t_60)
-
-# Solution 80 sec
-sol_t_80 = solver_implicit(flatSol(sol_t_60))
-print ("sol_t_80",sol_t_80)
-
-# Solution 100 sec
-sol_t_100 = solver_implicit(flatSol(sol_t_80))
-print ("sol_t_100",sol_t_100)
-
-# Solution 120 sec
-sol_t_120 = solver_implicit(flatSol(sol_t_100))
-print ("sol_t_120",sol_t_120)
-
-# Solution 140 sec
-sol_t_140 = solver_implicit(flatSol(sol_t_120))
-print ("sol_t_140",sol_t_140)
-
-masterlist = []
-masterlist.append(flatSol(sol_t_20))
-masterlist.append(flatSol(sol_t_40))
-masterlist.append(flatSol(sol_t_60))
-masterlist.append(flatSol(sol_t_80))
-masterlist.append(flatSol(sol_t_100))
-masterlist.append(flatSol(sol_t_120))
-masterlist.append(flatSol(sol_t_140))
-print ("Master",masterlist)
-
-##
-##for impacts in masterlist:
-##    pyplot.plot(impacts)
-##     
-##pyplot.show()
-
-#Plot the temperature along the wall.
-pyplot.figure(figsize=(6.0, 4.0))
-pyplot.xlabel('Node')
-pyplot.ylabel('Temperature [C]')
-pyplot.grid()
-#pyplot.plot(x, flatSol(sol_t_20),"r",flatSol(sol_t_40),"bs", flatSol(sol_t_60),flatSol(sol_t_80))
-#pyplot.plot(x, T, color='C0', linestyle='-', linewidth=2)
-i=0
-for impacts in masterlist:
-    i=i+1
-    pyplot.plot(impacts,label="{} data".format(i))
-    pyplot.legend()
-
-#pyplot.xlim(0.0, L)
-#pyplot.ylim(0.0, 100.0);
-pyplot.show()
+import matplotlib.pyplot as plt
 
 
+# =============================================================================
+# 1. INPUT PARAMETERS
+# =============================================================================
+
+# ---- Wall geometry ----------------------------------------------------------
+
+wall_thickness = 0.15          # Wall thickness [m]
+wall_area = 1.0                # Wall area considered [m²]
+
+number_of_nodes = 6            # Number of temperature nodes
+dx = wall_thickness / (number_of_nodes - 1)
+
+# ---- Material properties ----------------------------------------------------
+
+thermal_conductivity = 0.030   # Thermal conductivity [W/m-K]
+density = 120                   # Density [kg/m³]
+specific_heat = 70              # Specific heat capacity [J/kg-K]
+
+# Thermal diffusivity:
+# alpha = k / (rho * cp)
+thermal_diffusivity = (
+    thermal_conductivity / (density * specific_heat)
+)
+
+print("Thermal diffusivity =", thermal_diffusivity, "m²/s")
 
 
+# ---- Boundary conditions ---------------------------------------------------
+
+outside_temperature = 35       # Outside air temperature [°C]
+inside_temperature = 25        # Inside air temperature [°C]
+
+outside_heat_flux = 700        # Applied outside heat flux [W/m²]
+
+convective_coefficient = 15    # Convective heat-transfer coefficient [W/m²-K]
 
 
+# ---- Initial condition -----------------------------------------------------
+
+initial_temperature = 30       # Initial wall temperature [°C]
 
 
+# ---- Time settings ----------------------------------------------------------
+
+time_step = 120                # Time step [s]
+number_of_time_steps = 7       # Number of time steps to calculate
+
+print("Time step =", time_step, "s")
+
+
+# =============================================================================
+# 2. NODE LOCATIONS
+# =============================================================================
+
+# Node locations through the wall thickness
+node_positions = np.linspace(
+    0.0,
+    wall_thickness,
+    number_of_nodes
+)
+
+
+# =============================================================================
+# 3. DEFINE SYMBOLIC TEMPERATURE VARIABLES
+# =============================================================================
+
+# Temperatures at the NEW time step.
+#
+# t0 = temperature at outside surface
+# t1 = temperature at node 1
+# ...
+# t5 = temperature at inside surface
+
+t0, t1, t2, t3, t4, t5 = sym.symbols(
+    "t0 t1 t2 t3 t4 t5"
+)
+
+new_temperatures = (t0, t1, t2, t3, t4, t5)
+
+
+# =============================================================================
+# 4. IMPLICIT SOLVER
+# =============================================================================
+
+def solve_implicit(previous_temperatures):
+    """
+    Calculate temperatures at the new time step.
+
+    Parameters
+    ----------
+    previous_temperatures : list
+        Temperatures at the previous time step:
+        [T0, T1, T2, T3, T4, T5]
+
+    Returns
+    -------
+    solution : dict
+        Dictionary containing the calculated temperatures at the
+        new time step.
+    """
+
+    # -------------------------------------------------------------------------
+    # Outside boundary node (Node 0)
+    #
+    # Heat entering from outside by:
+    #   1. Applied heat flux
+    #   2. Convection from outside air
+    #
+    # Heat conducted from Node 0 to Node 1
+    # -------------------------------------------------------------------------
+
+    equation_0 = sym.Eq(
+        outside_heat_flux
+        + convective_coefficient * (outside_temperature - t0)
+        + thermal_conductivity * (t1 - t0) / dx,
+
+        thermal_conductivity * dx
+        * (t0 - previous_temperatures[0])
+        / (thermal_diffusivity * 2 * time_step)
+    )
+
+
+    # -------------------------------------------------------------------------
+    # Interior node 1
+    # -------------------------------------------------------------------------
+
+    equation_1 = sym.Eq(
+        thermal_conductivity * (t0 - t1) / dx
+        + thermal_conductivity * (t2 - t1) / dx,
+
+        thermal_conductivity * dx
+        * (t1 - previous_temperatures[1])
+        / (thermal_diffusivity * 2 * time_step)
+    )
+
+
+    # -------------------------------------------------------------------------
+    # Interior node 2
+    # -------------------------------------------------------------------------
+
+    equation_2 = sym.Eq(
+        thermal_conductivity * (t1 - t2) / dx
+        + thermal_conductivity * (t3 - t2) / dx,
+
+        thermal_conductivity * dx
+        * (t2 - previous_temperatures[2])
+        / (thermal_diffusivity * 2 * time_step)
+    )
+
+
+    # -------------------------------------------------------------------------
+    # Interior node 3
+    # -------------------------------------------------------------------------
+
+    equation_3 = sym.Eq(
+        thermal_conductivity * (t2 - t3) / dx
+        + thermal_conductivity * (t4 - t3) / dx,
+
+        thermal_conductivity * dx
+        * (t3 - previous_temperatures[3])
+        / (thermal_diffusivity * 2 * time_step)
+    )
+
+
+    # -------------------------------------------------------------------------
+    # Interior node 4
+    # -------------------------------------------------------------------------
+
+    equation_4 = sym.Eq(
+        thermal_conductivity * (t3 - t4) / dx
+        + thermal_conductivity * (t5 - t4) / dx,
+
+        thermal_conductivity * dx
+        * (t4 - previous_temperatures[4])
+        / (thermal_diffusivity * 2 * time_step)
+    )
+
+
+    # -------------------------------------------------------------------------
+    # Inside boundary node (Node 5)
+    #
+    # Heat conducted from Node 4 to Node 5
+    # Heat transferred from Node 5 to inside air by convection
+    # -------------------------------------------------------------------------
+
+    equation_5 = sym.Eq(
+        thermal_conductivity * (t4 - t5) / dx
+        + convective_coefficient * (inside_temperature - t5),
+
+        thermal_conductivity * dx
+        * (t5 - previous_temperatures[5])
+        / (thermal_diffusivity * 2 * time_step)
+    )
+
+
+    # -------------------------------------------------------------------------
+    # Solve the six simultaneous equations for the six unknown
+    # temperatures at the new time step.
+    # -------------------------------------------------------------------------
+
+    solution = sym.solve(
+        [
+            equation_0,
+            equation_1,
+            equation_2,
+            equation_3,
+            equation_4,
+            equation_5
+        ],
+        new_temperatures
+    )
+
+    return solution
+
+
+# =============================================================================
+# 5. CONVERT SYMPY SOLUTION TO A LIST
+# =============================================================================
+
+def get_temperature_list(solution):
+    """
+    Convert the SymPy solution dictionary into a list:
+
+    [T0, T1, T2, T3, T4, T5]
+    """
+
+    return [
+        float(solution[t0]),
+        float(solution[t1]),
+        float(solution[t2]),
+        float(solution[t3]),
+        float(solution[t4]),
+        float(solution[t5])
+    ]
+
+
+# =============================================================================
+# 6. INITIAL CONDITION
+# =============================================================================
+
+# All six wall nodes initially have the same temperature.
+previous_temperatures = [
+    initial_temperature
+] * number_of_nodes
+
+
+# =============================================================================
+# 7. TIME-STEPPING CALCULATION
+# =============================================================================
+
+temperature_history = []
+
+for step in range(1, number_of_time_steps + 1):
+
+    # Solve for temperatures at the current time step
+    solution = solve_implicit(previous_temperatures)
+
+    # Convert the solution to a simple list
+    current_temperatures = get_temperature_list(solution)
+
+    # Actual simulation time
+    current_time = step * time_step
+
+    # Store the result
+    temperature_history.append(
+        {
+            "time": current_time,
+            "temperatures": current_temperatures
+        }
+    )
+
+    # Display results
+    print(
+        f"\nTime = {current_time} s"
+    )
+
+    print(
+        "Temperatures [°C] =",
+        current_temperatures
+    )
+
+    # The current solution becomes the previous solution
+    # for the next time step.
+    previous_temperatures = current_temperatures
+
+
+# =============================================================================
+# 8. PLOT TEMPERATURE DISTRIBUTION THROUGH THE WALL
+# =============================================================================
+
+plt.figure(figsize=(7, 5))
+
+for result in temperature_history:
+
+    plt.plot(
+        node_positions,
+        result["temperatures"],
+        marker="o",
+        label=f"{result['time']} s"
+    )
+
+plt.xlabel("Distance through wall [m]")
+plt.ylabel("Temperature [°C]")
+
+plt.title("Transient Temperature Distribution Through Wall")
+
+plt.grid(True)
+plt.legend()
+
+plt.tight_layout()
+plt.show()
