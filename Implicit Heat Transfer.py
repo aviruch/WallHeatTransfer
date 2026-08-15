@@ -62,31 +62,31 @@ import sympy as sym
 #sym.init_printing()
 t0,t1,t2,t3,t4,t5 = sym.symbols('t0,t1,t2,t3,t4,t5')
 
-sol_t_20 = solver_explicit([25,25,25,25,25,25,25])
+sol_t_20 = solver_implicit([25,25,25,25,25,25,25])
 print ("sol_t_20",sol_t_20)
 
 # Solution 40 sec
-sol_t_40 = solver_explicit(flatSol(sol_t_20))
+sol_t_40 = solver_implicit(flatSol(sol_t_20))
 print ("sol_t_40",sol_t_40)
 
 # Solution 60 sec
-sol_t_60 = solver_explicit(flatSol(sol_t_40))
+sol_t_60 = solver_implicit(flatSol(sol_t_40))
 print ("sol_t_60",sol_t_60)
 
 # Solution 80 sec
-sol_t_80 = solver_explicit(flatSol(sol_t_60))
+sol_t_80 = solver_implicit(flatSol(sol_t_60))
 print ("sol_t_80",sol_t_80)
 
 # Solution 100 sec
-sol_t_100 = solver_explicit(flatSol(sol_t_80))
+sol_t_100 = solver_implicit(flatSol(sol_t_80))
 print ("sol_t_100",sol_t_100)
 
 # Solution 120 sec
-sol_t_120 = solver_explicit(flatSol(sol_t_100))
+sol_t_120 = solver_implicit(flatSol(sol_t_100))
 print ("sol_t_120",sol_t_120)
 
 # Solution 140 sec
-sol_t_140 = solver_explicit(flatSol(sol_t_120))
+sol_t_140 = solver_implicit(flatSol(sol_t_120))
 print ("sol_t_140",sol_t_140)
 
 masterlist = []
